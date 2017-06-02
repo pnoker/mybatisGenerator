@@ -1,12 +1,14 @@
 # mybatis-generator-core-oracle
 
+## mybatis gererator 真的Oracle定制，实现分页，ID自增，返回ID等功能。
+
 主要针对Oracle数据库定制，添加功能列表如下：
 - 分页
 - 自增
 - 返回自增ID
 
 ### 添加分页功能
-1 修改`Mapping`文件（文件位置：src\main\java\org\mybatis\generator\codegen\mybatis3\xmlmapper\elements\）
+**1** 修改`Mapping`文件（文件位置：src\main\java\org\mybatis\generator\codegen\mybatis3\xmlmapper\elements\）
 
 - SelectByExampleWithBLOBsElementGenerator.java
 - SelectByExampleWithoutBLOBsElementGenerator.java
@@ -112,6 +114,26 @@ field = new Field();
 ```
 
 生成Model文件中内容为，和上面的select语句中的start、limit关联上了：
+
+```java
+...
+protected int start;
+
+    protected int limit;
+
+    protected List<Criteria> oredCriteria;
+
+    public AlgoExample() {
+        oredCriteria = new ArrayList<Criteria>();
+    }
+
+    public AlgoExample(int start, int limit) {
+        this.start = start;
+        this.limit = limit;
+        oredCriteria = new ArrayList<Criteria>();
+    }
+...
+```
 
 
 
