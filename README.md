@@ -32,7 +32,7 @@ answer.addElement(ifElement);
 
 **1.2** 修改`' as QUERYID,` 为 `' as QUERYID,ROWNUM as RN,`，使用ROWNUM进行分页
 ```java
-StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         if (stringHasValue(introspectedTable
                 .getSelectByExampleQueryId())) {
             sb.append('\'');
@@ -78,7 +78,7 @@ StringBuilder sb = new StringBuilder();
 
 ```java
 #73行，请参考具体文件内容
-method = new Method();
+        method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setConstructor(true);
         method.setName(type.getShortName());
@@ -98,7 +98,7 @@ method = new Method();
 
 ```java
 #140行，请参考具体文件内容
-field = new Field();
+        field = new Field();
         field.setVisibility(JavaVisibility.PROTECTED);
         field.setType(FullyQualifiedJavaType.getIntInstance());
         field.setName("start");
@@ -211,7 +211,7 @@ CACHE 20;
 ```sql
 <insert id="insert" parameterType="com.cmcc.emp.model.Algo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE" >
-      SELECT algo_seq_id.nextval AS id FROM DUAL
+      SELECT ALGO_SEQ_ID.nextval AS id FROM DUAL
     </selectKey>
     insert into EMP_ALGO (ID, NAME, PATH, 
       DESCRIPTION, AT_TIME, PARAM
@@ -219,8 +219,29 @@ CACHE 20;
     values (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{atTime,jdbcType=TIMESTAMP}, #{param,jdbcType=CLOB}
       )
-  </insert>
+</insert>
 ```
+
+### 获取自增后返回的ID
+
+```java
+Algo algo = new Algo();
+
+...
+
+//不用setId(xxx),插表操作后会自动返回ID
+algo.setName("xxx");
+algo.setAtTime(new Date());
+
+...
+
+algoService.insertSelective(algo);
+
+//获取返回的ID，直接getID()即可
+logger.info("自增后ID为：" + algo.getId());
+```
+
+
 
 
 
