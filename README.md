@@ -255,7 +255,8 @@ idea导入maven
 
 ### 2.如何生成mybatis-generator-core-oracle.jar和mybatis-generator-core-oracle-sources.jar
 
-在IDE上修改完代码后，在项目根目录下命令行执行：`mvn inseall`,当出错是使用：`mvn clean`进行清空，于是会在target文件下生成两个jar包：
+在IDE上修改完代码后，在项目根目录下命令行执行：`mvn inseall`,当出错时使用：`mvn clean`进行清空，
+`mvn inseall`之后，会在target文件下生成两个jar包：
 
 - mybatis-generator-core-oracle-1.3.2.jar，需要使用的jar
 - mybatis-generator-core-oracle-1.3.2-sources.jar，源码
