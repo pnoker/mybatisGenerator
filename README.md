@@ -226,17 +226,12 @@ CACHE 20;
 
 ```java
 Algo algo = new Algo();
-
 ...
-
 //不用setId(xxx),插表操作后会自动返回ID
 algo.setName("xxx");
 algo.setAtTime(new Date());
-
 ...
-
 algoService.insertSelective(algo);
-
 //获取返回的ID，直接getID()即可
 logger.info("自增后ID为：" + algo.getId());
 ```
