@@ -236,6 +236,36 @@ algoService.insertSelective(algo);
 logger.info("自增后ID为：" + algo.getId());
 ```
 
+## 重要
+
+推荐工具：git、idea 
+
+### 1.如何导入该工程
+Clone该工程到项目文件夹下
+
+```bash
+git clone https://github.com/pnoker/mybatisGenerator.git
+```
+
+idea导入maven
+
+`File` -> `New` -> `Project From Existing Sources` -> 选择`mybatisGenerator`
+
+选择自动导入依赖的jar
+
+### 2.如何生成mybatis-generator-core-oracle.jar和mybatis-generator-core-oracle-sources.jar
+
+在IDE上修改完代码后，再项目根目录下命令行执行：`mvn inseall`,当出错是使用：`mvn clean`进行清空，于是会在target文件下生成两个jar包：
+
+- mybatis-generator-core-oracle-1.3.2.jar，需要使用的jar
+- mybatis-generator-core-oracle-1.3.2-sources.jar，源码
+
+### 3.如何生成Dao、Model、Mapping
+
+```bash
+java -jar src/main/webapp/WEB-INF/lib/mybatis-generator-core-oracle-1.3.2.jar -configfile generatorConfig.xml -overwrite
+```
+
 
 
 
