@@ -20,6 +20,18 @@ ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0"));
 ifElement.addElement(new TextElement("select * from ( select * from ("));
 ```
 
+修改`' as QUERYID,` 为 `' as QUERYID,ROWNUM as RN,`，使用ROWNUM进行分页
+```java
+StringBuilder sb = new StringBuilder();
+        if (stringHasValue(introspectedTable
+                .getSelectByExampleQueryId())) {
+            sb.append('\'');
+            sb.append(introspectedTable.getSelectByExampleQueryId());
+            sb.append("' as QUERYID,ROWNUM as RN,"); //$NON-NLS-1$
+            answer.addElement(new TextElement(sb.toString()));
+        }
+```
+
 ```java
 #85行，请参考具体文件内容
 ifElement = new XmlElement("if");
@@ -74,7 +86,7 @@ method = new Method();
                 .getIntInstance(), "limit"));
         method.addBodyLine("this.start = start;\n" +
                 "        this.limit = limit;\n" +
-                "        oredCriteria = new ArrayList<Criteria>();"); //$NON-NLS-1$
+                "        oredCriteria = new ArrayList<Criteria>();");
 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
         topLevelClass.addMethod(method);
@@ -87,18 +99,19 @@ method = new Method();
 field = new Field();
         field.setVisibility(JavaVisibility.PROTECTED);
         field.setType(FullyQualifiedJavaType.getIntInstance());
-        field.setName("start"); //$NON-NLS-1$
+        field.setName("start");
         commentGenerator.addFieldComment(field, introspectedTable);
         topLevelClass.addField(field);
 
         field = new Field();
         field.setVisibility(JavaVisibility.PROTECTED);
         field.setType(FullyQualifiedJavaType.getIntInstance());
-        field.setName("limit"); //$NON-NLS-1$
+        field.setName("limit");
         commentGenerator.addFieldComment(field, introspectedTable);
         topLevelClass.addField(field);
 ```
 
+生成Model文件中内容为，和上面的select语句中的start、limit关联上了：
 
 
 

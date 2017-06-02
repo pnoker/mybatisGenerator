@@ -61,7 +61,7 @@ public class SelectByExampleWithoutBLOBsElementGenerator extends
                 .getSelectByExampleQueryId())) {
             sb.append('\'');
             sb.append(introspectedTable.getSelectByExampleQueryId());
-            sb.append("' as QUERYID,"); //$NON-NLS-1$
+            sb.append("' as QUERYID,ROWNUM as RN,"); //$NON-NLS-1$
             answer.addElement(new TextElement(sb.toString()));
         }
         answer.addElement(getBaseColumnListElement());
