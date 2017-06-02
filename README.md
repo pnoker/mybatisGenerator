@@ -6,9 +6,9 @@
 - 返回自增ID
 
 ## 添加分页功能
-修改文件：
-- src\main\java\org\mybatis\generator\codegen\mybatis3\xmlmapper\elements\SelectByExampleWithBLOBsElementGenerator.java
-- src\main\java\org\mybatis\generator\codegen\mybatis3\xmlmapper\elements\SelectByExampleWithoutBLOBsElementGenerator.java
+修改文件（文件位置：src\main\java\org\mybatis\generator\codegen\mybatis3\xmlmapper\elements）
+- SelectByExampleWithBLOBsElementGenerator.java
+- SelectByExampleWithoutBLOBsElementGenerator.java
 
 
 
