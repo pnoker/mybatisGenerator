@@ -135,6 +135,92 @@ protected int start;
 ...
 ```
 
+### 添加自增功能
+
+Oracle数据库同SQL Server 、MySQL等数据库不一样，不能直接设置某个字段为自增的，需要手动创建序列（Sequence）和触发器（Trigger），实现列的自增
+
+由于是使用Mybatis操作Oracle数据库，所以在进行建表的时候只需要建立序列（Sequence）就行，触发器（Trigger)不用创建，触发器的创建将整合到Mybatis Mapping文件中去，详情如下：
+
+**1** 修改`generatorConfig.xml`文件（文件位置：为Mybatis Generator的配置文件）
+
+说明：Oracle中对大小写不敏感，小写一律会自动变成大写字母的
+
+- generatorConfig.xml
+
+```xml
+<table tableName="EMP_ALGO" domainObjectName="Algo" enableCountByExample="true"
+    enableUpdateByExample="true" enableDeleteByExample="true"
+    enableSelectByExample="true" selectByExampleQueryId="true">
+    <generatedKey column="id" sqlStatement="SELECT ALGO_SEQ_ID.nextval AS id FROM DUAL"/>
+</table>
+```
+
+**[注]** `ALGO_SEQ_ID`为表`EMP_ALGO`的序列（Sequence）名称，务必保持一致
+
+- 建表 - > `EMP_ALGO`
+
+```sql
+CREATE TABLE EMP_ALGO
+(
+  id          NUMBER(11) NOT NULL,
+  name        VARCHAR2(32),
+  path        VARCHAR2(64),
+  param       CLOB,
+  description VARCHAR2(64),
+  at_time     TIMESTAMP(6)
+)
+TABLESPACE EMP
+PCTFREE 10
+INITRANS 1
+MAXTRANS 255
+STORAGE
+(
+INITIAL 64K
+MINEXTENTS 1
+MAXEXTENTS UNLIMITED
+);
+
+ALTER TABLE EMP_ALGO
+  ADD CONSTRAINT EMP_ALGO_PK PRIMARY KEY (ID)
+  USING INDEX
+  TABLESPACE EMP
+  PCTFREE 10
+  INITRANS 2
+  MAXTRANS 255
+  STORAGE
+  (
+  INITIAL 64K
+  MINEXTENTS 1
+  MAXEXTENTS UNLIMITED
+  );
+```
+
+- 创建序列（Sequence） - > `ALGO_SEQ_ID`
+
+```sql
+CREATE SEQUENCE ALGO_SEQ_ID
+MINVALUE 1
+MAXVALUE 9999999999999999999999999999
+START WITH 1
+INCREMENT BY 1
+CACHE 20;
+```
+
+**2** 生成Mapping.xml文件中insert和nsertSelective（此处省）语句为：
+
+```sql
+<insert id="insert" parameterType="com.cmcc.emp.model.Algo" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE" >
+      SELECT algo_seq_id.nextval AS id FROM DUAL
+    </selectKey>
+    insert into EMP_ALGO (ID, NAME, PATH, 
+      DESCRIPTION, AT_TIME, PARAM
+      )
+    values (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{atTime,jdbcType=TIMESTAMP}, #{param,jdbcType=CLOB}
+      )
+  </insert>
+```
 
 
 
