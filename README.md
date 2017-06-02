@@ -13,9 +13,18 @@
 添加内容：
 
 ```java
+#48行，请参考具体文件内容
 XmlElement ifElement = new XmlElement("if");
 ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0"));
 ifElement.addElement(new TextElement("select * from ( select * from ("));
+```
+
+```java
+#85行，请参考具体文件内容
+ifElement = new XmlElement("if");
+ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0"));
+ifElement.addElement(new TextElement(") A where A.RN &lt;= #{limit} ) B where B.RN &gt; #{start}"));
+answer.addElement(ifElement);
 ```
 
 

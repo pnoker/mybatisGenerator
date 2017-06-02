@@ -45,6 +45,7 @@ public class SelectByExampleWithBLOBsElementGenerator extends
 
         context.getCommentGenerator().addComment(answer);
 
+        /*添加分页查询*/
         XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
         ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
         ifElement.addElement(new TextElement("select * from ( select * from (")); //$NON-NLS-1$
@@ -81,6 +82,7 @@ public class SelectByExampleWithBLOBsElementGenerator extends
         ifElement.addElement(new TextElement("order by ${orderByClause}")); //$NON-NLS-1$
         answer.addElement(ifElement);
 
+        /*添加分页查询*/
         ifElement = new XmlElement("if"); //$NON-NLS-1$
         ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
         ifElement.addElement(new TextElement(") A where A.RN &lt;= #{limit} ) B where B.RN &gt; #{start}")); //$NON-NLS-1$
