@@ -70,6 +70,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
         topLevelClass.addMethod(method);
 
+        /*构造方法*/
         method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setConstructor(true);
