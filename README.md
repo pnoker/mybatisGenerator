@@ -1,6 +1,6 @@
 # mybatis-generator-core-oracle
 
-## mybatis gererator 真的Oracle定制，实现分页，ID自增，返回ID等功能。
+## mybatis gererator 针对 Oracle 定制，实现分页，ID自增，返回ID等功能。
 
 主要针对Oracle数据库定制，添加功能列表如下：
 - 分页
@@ -13,7 +13,7 @@
 - SelectByExampleWithBLOBsElementGenerator.java
 - SelectByExampleWithoutBLOBsElementGenerator.java
 
-添加内容以`SelectByExampleWithBLOBsElementGenerator.java`文件为例，`SelectByExampleWithoutBLOBsElementGenerator.java`文件的修改相同：
+**1.1** 添加内容以`SelectByExampleWithBLOBsElementGenerator.java`文件为例，`SelectByExampleWithoutBLOBsElementGenerator.java`文件的修改相同：
 
 ```java
 #48行，请参考具体文件内容
@@ -22,7 +22,15 @@ ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0"));
 ifElement.addElement(new TextElement("select * from ( select * from ("));
 ```
 
-修改`' as QUERYID,` 为 `' as QUERYID,ROWNUM as RN,`，使用ROWNUM进行分页
+```java
+#85行，请参考具体文件内容
+ifElement = new XmlElement("if");
+ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0"));
+ifElement.addElement(new TextElement(") A where A.RN &lt;= #{limit} ) B where B.RN &gt; #{start}"));
+answer.addElement(ifElement);
+```
+
+**1.2** 修改`' as QUERYID,` 为 `' as QUERYID,ROWNUM as RN,`，使用ROWNUM进行分页
 ```java
 StringBuilder sb = new StringBuilder();
         if (stringHasValue(introspectedTable
@@ -34,15 +42,7 @@ StringBuilder sb = new StringBuilder();
         }
 ```
 
-```java
-#85行，请参考具体文件内容
-ifElement = new XmlElement("if");
-ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0"));
-ifElement.addElement(new TextElement(") A where A.RN &lt;= #{limit} ) B where B.RN &gt; #{start}"));
-answer.addElement(ifElement);
-```
-
-生成Mapping.xml文件中select语句为：
+**1.3** 生成Mapping.xml文件中select语句为：
 
 ```xml
 <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.cmcc.emp.model.AlgoExample" >
@@ -70,11 +70,11 @@ answer.addElement(ifElement);
   </select>
 ```
 
-2 修改`model`文件（文件位置：src\main\java\org\mybatis\generator\codegen\mybatis3\model\）
+**2** 修改`model`文件（文件位置：src\main\java\org\mybatis\generator\codegen\mybatis3\model\）
 
 - ExampleGenerator.java
 
-添加构造方法`public XxxExample(int start, int limit)`
+**2.1** 添加构造方法`public XxxExample(int start, int limit)`
 
 ```java
 #73行，请参考具体文件内容
@@ -94,7 +94,7 @@ method = new Method();
         topLevelClass.addMethod(method);
 ```
 
-添加参数：`protected int start;` 和 `protected int limit;`
+**2.2** 添加参数：`protected int start;` 和 `protected int limit;`
 
 ```java
 #140行，请参考具体文件内容
@@ -113,7 +113,7 @@ field = new Field();
         topLevelClass.addField(field);
 ```
 
-生成Model文件中内容为，和上面的select语句中的start、limit关联上了：
+**2.3** 生成Model文件中内容为，和上面的select语句中的start、limit关联上了：
 
 ```java
 ...
