@@ -10,7 +10,7 @@
 - SelectByExampleWithBLOBsElementGenerator.java
 - SelectByExampleWithoutBLOBsElementGenerator.java
 
-添加内容：
+添加内容以`SelectByExampleWithBLOBsElementGenerator.java`文件为例，`SelectByExampleWithoutBLOBsElementGenerator.java`文件的修改相同：
 
 ```java
 #48行，请参考具体文件内容
