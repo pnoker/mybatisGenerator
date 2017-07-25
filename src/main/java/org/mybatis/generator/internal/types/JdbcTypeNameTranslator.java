@@ -1,17 +1,17 @@
-/*
- *  Copyright 2008 The Apache Software Foundation
+/**
+ *    Copyright 2006-2016 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.internal.types;
 
@@ -49,10 +49,10 @@ public class JdbcTypeNameTranslator {
         typeToName.put(Types.JAVA_OBJECT, "JAVA_OBJECT"); //$NON-NLS-1$
         typeToName.put(Types.LONGVARBINARY, "LONGVARBINARY"); //$NON-NLS-1$
         typeToName.put(Types.LONGVARCHAR, "LONGVARCHAR"); //$NON-NLS-1$
-        typeToName.put(Jdbc4Types.NCHAR, "NCHAR"); //$NON-NLS-1$
-        typeToName.put(Jdbc4Types.NCLOB, "NCLOB"); //$NON-NLS-1$
-        typeToName.put(Jdbc4Types.NVARCHAR, "NVARCHAR"); //$NON-NLS-1$
-        typeToName.put(Jdbc4Types.LONGNVARCHAR, "LONGNVARCHAR"); //$NON-NLS-1$
+        typeToName.put(Types.NCHAR, "NCHAR"); //$NON-NLS-1$
+        typeToName.put(Types.NCLOB, "NCLOB"); //$NON-NLS-1$
+        typeToName.put(Types.NVARCHAR, "NVARCHAR"); //$NON-NLS-1$
+        typeToName.put(Types.LONGNVARCHAR, "LONGNVARCHAR"); //$NON-NLS-1$
         typeToName.put(Types.NULL, "NULL"); //$NON-NLS-1$
         typeToName.put(Types.NUMERIC, "NUMERIC"); //$NON-NLS-1$
         typeToName.put(Types.OTHER, "OTHER"); //$NON-NLS-1$
@@ -85,10 +85,10 @@ public class JdbcTypeNameTranslator {
         nameToType.put("JAVA_OBJECT", Types.JAVA_OBJECT); //$NON-NLS-1$
         nameToType.put("LONGVARBINARY", Types.LONGVARBINARY); //$NON-NLS-1$
         nameToType.put("LONGVARCHAR", Types.LONGVARCHAR); //$NON-NLS-1$
-        nameToType.put("NCHAR", Jdbc4Types.NCHAR); //$NON-NLS-1$
-        nameToType.put("NCLOB", Jdbc4Types.NCLOB); //$NON-NLS-1$
-        nameToType.put("NVARCHAR", Jdbc4Types.NVARCHAR); //$NON-NLS-1$
-        nameToType.put("LONGNVARCHAR", Jdbc4Types.LONGNVARCHAR); //$NON-NLS-1$
+        nameToType.put("NCHAR", Types.NCHAR); //$NON-NLS-1$
+        nameToType.put("NCLOB", Types.NCLOB); //$NON-NLS-1$
+        nameToType.put("NVARCHAR", Types.NVARCHAR); //$NON-NLS-1$
+        nameToType.put("LONGNVARCHAR", Types.LONGNVARCHAR); //$NON-NLS-1$
         nameToType.put("NULL", Types.NULL); //$NON-NLS-1$
         nameToType.put("NUMERIC", Types.NUMERIC); //$NON-NLS-1$
         nameToType.put("OTHER", Types.OTHER); //$NON-NLS-1$

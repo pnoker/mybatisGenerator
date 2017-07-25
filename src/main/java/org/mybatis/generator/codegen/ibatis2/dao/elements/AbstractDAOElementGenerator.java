@@ -1,17 +1,17 @@
-/*
- *  Copyright 2008 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.codegen.ibatis2.dao.elements;
 
@@ -30,6 +30,7 @@ import org.mybatis.generator.internal.ExtendedDAOMethodNameCalculator;
 import org.mybatis.generator.internal.ObjectFactory;
 
 /**
+ * Base class for all DAO element generators.
  * 
  * @author Jeff Butler
  */
@@ -39,7 +40,7 @@ public abstract class AbstractDAOElementGenerator extends AbstractGenerator {
     public abstract void addImplementationElements(TopLevelClass topLevelClass);
 
     protected AbstractDAOTemplate daoTemplate;
-    private DAOMethodNameCalculator dAOMethodNameCalculator;
+    private DAOMethodNameCalculator daoMethodNameCalculator;
     private JavaVisibility exampleMethodVisibility;
 
     public AbstractDAOElementGenerator() {
@@ -51,7 +52,7 @@ public abstract class AbstractDAOElementGenerator extends AbstractGenerator {
     }
 
     public DAOMethodNameCalculator getDAOMethodNameCalculator() {
-        if (dAOMethodNameCalculator == null) {
+        if (daoMethodNameCalculator == null) {
             String type = context.getJavaClientGeneratorConfiguration()
                     .getProperty(PropertyRegistry.DAO_METHOD_NAME_CALCULATOR);
             if (stringHasValue(type)) {
@@ -65,16 +66,16 @@ public abstract class AbstractDAOElementGenerator extends AbstractGenerator {
             }
 
             try {
-                dAOMethodNameCalculator = (DAOMethodNameCalculator) ObjectFactory
+                daoMethodNameCalculator = (DAOMethodNameCalculator) ObjectFactory
                         .createInternalObject(type);
             } catch (Exception e) {
-                dAOMethodNameCalculator = new DefaultDAOMethodNameCalculator();
+                daoMethodNameCalculator = new DefaultDAOMethodNameCalculator();
                 warnings.add(getString(
                         "Warning.17", type, e.getMessage())); //$NON-NLS-1$
             }
         }
 
-        return dAOMethodNameCalculator;
+        return daoMethodNameCalculator;
     }
 
     public JavaVisibility getExampleMethodVisibility() {

@@ -1,17 +1,17 @@
-/*
- *  Copyright 2010 The MyBatis Team
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.codegen.mybatis3.javamapper.elements.annotated;
 
@@ -29,8 +29,7 @@ import org.mybatis.generator.codegen.mybatis3.javamapper.elements.SelectByExampl
  * 
  * @author Jeff Butler
  */
-public class AnnotatedSelectByExampleWithoutBLOBsMethodGenerator extends
-    SelectByExampleWithoutBLOBsMethodGenerator {
+public class AnnotatedSelectByExampleWithoutBLOBsMethodGenerator extends SelectByExampleWithoutBLOBsMethodGenerator {
 
     public AnnotatedSelectByExampleWithoutBLOBsMethodGenerator() {
         super();
@@ -39,32 +38,22 @@ public class AnnotatedSelectByExampleWithoutBLOBsMethodGenerator extends
     @Override
     public void addMapperAnnotations(Interface interfaze, Method method) {
         FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(introspectedTable.getMyBatis3SqlProviderType());
-        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.SelectProvider")); //$NON-NLS-1$
-        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.type.JdbcType")); //$NON-NLS-1$
 
-        if (introspectedTable.isConstructorBased()) {
-            interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Arg")); //$NON-NLS-1$
-            interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.ConstructorArgs")); //$NON-NLS-1$
-        } else {
-            interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Result")); //$NON-NLS-1$
-            interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Results")); //$NON-NLS-1$
-        }
-        
         StringBuilder sb = new StringBuilder();
         sb.append("@SelectProvider(type="); //$NON-NLS-1$
         sb.append(fqjt.getShortName());
         sb.append(".class, method=\""); //$NON-NLS-1$
         sb.append(introspectedTable.getSelectByExampleStatementId());
         sb.append("\")"); //$NON-NLS-1$
-        
+
         method.addAnnotation(sb.toString());
-        
+
         if (introspectedTable.isConstructorBased()) {
             method.addAnnotation("@ConstructorArgs({"); //$NON-NLS-1$
         } else {
             method.addAnnotation("@Results({"); //$NON-NLS-1$
         }
-        
+
         Iterator<IntrospectedColumn> iterPk = introspectedTable.getPrimaryKeyColumns().iterator();
         Iterator<IntrospectedColumn> iterNonPk = introspectedTable.getBaseColumns().iterator();
         while (iterPk.hasNext()) {
@@ -77,7 +66,7 @@ public class AnnotatedSelectByExampleWithoutBLOBsMethodGenerator extends
             if (iterPk.hasNext() || iterNonPk.hasNext()) {
                 sb.append(',');
             }
-            
+
             method.addAnnotation(sb.toString());
         }
 
@@ -91,10 +80,24 @@ public class AnnotatedSelectByExampleWithoutBLOBsMethodGenerator extends
             if (iterNonPk.hasNext()) {
                 sb.append(',');
             }
-            
+
             method.addAnnotation(sb.toString());
         }
-        
+
         method.addAnnotation("})"); //$NON-NLS-1$
+    }
+
+    @Override
+    public void addExtraImports(Interface interfaze) {
+        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.SelectProvider")); //$NON-NLS-1$
+        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.type.JdbcType")); //$NON-NLS-1$
+
+        if (introspectedTable.isConstructorBased()) {
+            interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Arg")); //$NON-NLS-1$
+            interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.ConstructorArgs")); //$NON-NLS-1$
+        } else {
+            interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Result")); //$NON-NLS-1$
+            interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Results")); //$NON-NLS-1$
+        }
     }
 }

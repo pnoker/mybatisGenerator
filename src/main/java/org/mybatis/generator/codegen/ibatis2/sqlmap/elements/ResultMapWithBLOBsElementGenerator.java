@@ -1,17 +1,17 @@
-/*
- *  Copyright 2008 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.codegen.ibatis2.sqlmap.elements;
 
@@ -25,12 +25,12 @@ import org.mybatis.generator.codegen.ibatis2.Ibatis2FormattingUtilities;
 import org.mybatis.generator.config.PropertyRegistry;
 
 /**
- * 
+ *  Generates the resultmap with BLOBs for iBatis2.
+ *  
  * @author Jeff Butler
  * 
  */
-public class ResultMapWithBLOBsElementGenerator extends
-        AbstractXmlElementGenerator {
+public class ResultMapWithBLOBsElementGenerator extends AbstractXmlElementGenerator {
 
     public ResultMapWithBLOBsElementGenerator() {
         super();
@@ -38,8 +38,8 @@ public class ResultMapWithBLOBsElementGenerator extends
 
     @Override
     public void addElements(XmlElement parentElement) {
-        boolean useColumnIndex = isTrue(introspectedTable
-                        .getTableConfigurationProperty(PropertyRegistry.TABLE_USE_COLUMN_INDEXES));
+        boolean useColumnIndex = isTrue(
+                introspectedTable.getTableConfigurationProperty(PropertyRegistry.TABLE_USE_COLUMN_INDEXES));
 
         XmlElement answer = new XmlElement("resultMap"); //$NON-NLS-1$
 
@@ -67,42 +67,31 @@ public class ResultMapWithBLOBsElementGenerator extends
         context.getCommentGenerator().addComment(answer);
 
         int i = introspectedTable.getNonBLOBColumnCount() + 1;
-        if (stringHasValue(introspectedTable
-                .getSelectByPrimaryKeyQueryId())
-                || stringHasValue(introspectedTable
-                        .getSelectByExampleQueryId())) {
+        if (stringHasValue(introspectedTable.getSelectByPrimaryKeyQueryId())
+                || stringHasValue(introspectedTable.getSelectByExampleQueryId())) {
             i++;
         }
 
-        for (IntrospectedColumn introspectedColumn : introspectedTable
-                .getBLOBColumns()) {
+        for (IntrospectedColumn introspectedColumn : introspectedTable.getBLOBColumns()) {
             XmlElement resultElement = new XmlElement("result"); //$NON-NLS-1$
 
             if (useColumnIndex) {
-                resultElement.addAttribute(new Attribute(
-                        "columnIndex", Integer.toString(i++))); //$NON-NLS-1$
+                resultElement.addAttribute(new Attribute("columnIndex", Integer.toString(i++))); //$NON-NLS-1$
             } else {
-                resultElement
-                        .addAttribute(new Attribute(
-                                "column", Ibatis2FormattingUtilities.getRenamedColumnNameForResultMap(introspectedColumn))); //$NON-NLS-1$
+                resultElement.addAttribute(new Attribute("column", //$NON-NLS-1$
+                        Ibatis2FormattingUtilities.getRenamedColumnNameForResultMap(introspectedColumn)));
             }
-            resultElement.addAttribute(new Attribute(
-                    "property", introspectedColumn.getJavaProperty())); //$NON-NLS-1$
-            resultElement.addAttribute(new Attribute(
-                    "jdbcType", introspectedColumn.getJdbcTypeName())); //$NON-NLS-1$
+            resultElement.addAttribute(new Attribute("property", introspectedColumn.getJavaProperty())); //$NON-NLS-1$
+            resultElement.addAttribute(new Attribute("jdbcType", introspectedColumn.getJdbcTypeName())); //$NON-NLS-1$
 
-            if (stringHasValue(introspectedColumn
-                    .getTypeHandler())) {
-                resultElement.addAttribute(new Attribute(
-                        "typeHandler", introspectedColumn.getTypeHandler())); //$NON-NLS-1$
+            if (stringHasValue(introspectedColumn.getTypeHandler())) {
+                resultElement.addAttribute(new Attribute("typeHandler", introspectedColumn.getTypeHandler())); //$NON-NLS-1$
             }
 
             answer.addElement(resultElement);
         }
 
-        if (context.getPlugins()
-                .sqlMapResultMapWithBLOBsElementGenerated(answer,
-                        introspectedTable)) {
+        if (context.getPlugins().sqlMapResultMapWithBLOBsElementGenerated(answer, introspectedTable)) {
             parentElement.addElement(answer);
         }
     }

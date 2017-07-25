@@ -1,17 +1,17 @@
-/*
- *  Copyright 2006 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.codegen.ibatis2.dao.templates;
 
@@ -34,6 +34,7 @@ import org.mybatis.generator.api.dom.java.Parameter;
  * @author Jeff Butler
  */
 public abstract class AbstractDAOTemplate {
+
     private List<FullyQualifiedJavaType> interfaceImports;
 
     private List<FullyQualifiedJavaType> implementationImports;
@@ -60,9 +61,6 @@ public abstract class AbstractDAOTemplate {
 
     private boolean configured;
 
-    /**
-     *  
-     */
     public AbstractDAOTemplate() {
         super();
         interfaceImports = new ArrayList<FullyQualifiedJavaType>();
@@ -364,13 +362,13 @@ public abstract class AbstractDAOTemplate {
      * <li>{2} - The parameter object</li>
      * </ul>
      * 
-     * For example, when calling methods in the SqlMapClient interface, the
+     * <p>For example, when calling methods in the SqlMapClient interface, the
      * template would be:
      * 
-     * sqlMapClient.insert(\"{0}.{1}\", {2});
+     * <p>sqlMapClient.insert(\"{0}.{1}\", {2});
      * 
-     * Overriding methods should call the
-     * <code>setInsertMethodTemplate(String)</code method to set the template.
+     * <p>Overriding methods should call the
+     * <code>setInsertMethodTemplate(String)</code> method to set the template.
      * 
      */
     protected abstract void configureInsertMethodTemplate();
@@ -385,13 +383,13 @@ public abstract class AbstractDAOTemplate {
      * <li>{2} - The parameter object</li>
      * </ul>
      * 
-     * For example, when calling methods in the SqlMapClient interface, the
+     * <p>For example, when calling methods in the SqlMapClient interface, the
      * template would be:
      * 
-     * sqlMapClient.queryForList(\"{0}.{1}\", {2});
+     * <p>sqlMapClient.queryForList(\"{0}.{1}\", {2});
      * 
-     * Overriding methods should call the
-     * <code>setQueryForListMethodTemplate(String)</code method to set the
+     * <p>Overriding methods should call the
+     * <code>setQueryForListMethodTemplate(String)</code> method to set the
      * template.
      */
     protected abstract void configureQueryForListMethodTemplate();
@@ -406,13 +404,13 @@ public abstract class AbstractDAOTemplate {
      * <li>{2} - The parameter object</li>
      * </ul>
      * 
-     * For example, when calling methods in the SqlMapClient interface, the
+     * <p>For example, when calling methods in the SqlMapClient interface, the
      * template would be:
      * 
-     * sqlMapClient.queryForObject(\"{0}.{1}\", {2});
+     * <p>sqlMapClient.queryForObject(\"{0}.{1}\", {2});
      * 
-     * Overriding methods should call the
-     * <code>setQueryForObjectMethodTemplate(String)</code method to set the
+     * <p>Overriding methods should call the
+     * <code>setQueryForObjectMethodTemplate(String)</code> method to set the
      * template.
      */
     protected abstract void configureQueryForObjectMethodTemplate();
@@ -427,13 +425,13 @@ public abstract class AbstractDAOTemplate {
      * <li>{2} - The parameter object</li>
      * </ul>
      * 
-     * For example, when calling methods in the SqlMapClient interface, the
+     * <p>For example, when calling methods in the SqlMapClient interface, the
      * template would be:
      * 
-     * sqlMapClient.update(\"{0}.{1}\", {2});
+     * <p>sqlMapClient.update(\"{0}.{1}\", {2});
      * 
-     * Overriding methods should call the
-     * <code>setUpdateMethodTemplate(String)</code method to set the template.
+     * <p>Overriding methods should call the
+     * <code>setUpdateMethodTemplate(String)</code> method to set the template.
      */
     protected abstract void configureUpdateMethodTemplate();
 
@@ -447,13 +445,13 @@ public abstract class AbstractDAOTemplate {
      * <li>{2} - The parameter object</li>
      * </ul>
      * 
-     * For example, when calling methods in the SqlMapClient interface, the
+     * <p>For example, when calling methods in the SqlMapClient interface, the
      * template would be:
      * 
-     * sqlMapClient.delete(\"{0}.{1}\", {2});
+     * <p>sqlMapClient.delete(\"{0}.{1}\", {2});
      * 
-     * Overriding methods should call the
-     * <code>setDeleteMethodTemplate(String)</code method to set the template.
+     * <p>Overriding methods should call the
+     * <code>setDeleteMethodTemplate(String)</code> method to set the template.
      */
     protected abstract void configureDeleteMethodTemplate();
 }

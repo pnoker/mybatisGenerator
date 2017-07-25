@@ -1,19 +1,18 @@
-/*
- *  Copyright 2006 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
-
 package org.mybatis.generator.internal;
 
 import org.mybatis.generator.api.DAOMethodNameCalculator;
@@ -33,6 +32,7 @@ public class DefaultDAOMethodNameCalculator implements DAOMethodNameCalculator {
         super();
     }
 
+    @Override
     public String getInsertMethodName(IntrospectedTable introspectedTable) {
         return "insert"; //$NON-NLS-1$
     }
@@ -44,6 +44,7 @@ public class DefaultDAOMethodNameCalculator implements DAOMethodNameCalculator {
      * updateByPrimaryKey 3. Else the method name should be
      * updateByPrimaryKeyWithoutBLOBs
      */
+    @Override
     public String getUpdateByPrimaryKeyWithoutBLOBsMethodName(
             IntrospectedTable introspectedTable) {
         Rules rules = introspectedTable.getRules();
@@ -64,6 +65,7 @@ public class DefaultDAOMethodNameCalculator implements DAOMethodNameCalculator {
      * updateByPrimaryKey 3. Else the method name should be
      * updateByPrimaryKeyWithBLOBs
      */
+    @Override
     public String getUpdateByPrimaryKeyWithBLOBsMethodName(
             IntrospectedTable introspectedTable) {
         Rules rules = introspectedTable.getRules();
@@ -77,11 +79,13 @@ public class DefaultDAOMethodNameCalculator implements DAOMethodNameCalculator {
         }
     }
 
+    @Override
     public String getDeleteByExampleMethodName(
             IntrospectedTable introspectedTable) {
         return "deleteByExample"; //$NON-NLS-1$
     }
 
+    @Override
     public String getDeleteByPrimaryKeyMethodName(
             IntrospectedTable introspectedTable) {
         return "deleteByPrimaryKey"; //$NON-NLS-1$
@@ -92,6 +96,7 @@ public class DefaultDAOMethodNameCalculator implements DAOMethodNameCalculator {
      * selectByExample. 2. Else the method name should be
      * selectByExampleWithoutBLOBs
      */
+    @Override
     public String getSelectByExampleWithoutBLOBsMethodName(
             IntrospectedTable introspectedTable) {
         Rules rules = introspectedTable.getRules();
@@ -108,6 +113,7 @@ public class DefaultDAOMethodNameCalculator implements DAOMethodNameCalculator {
      * selectByExample. 2. Else the method name should be
      * selectByExampleWithBLOBs
      */
+    @Override
     public String getSelectByExampleWithBLOBsMethodName(
             IntrospectedTable introspectedTable) {
         Rules rules = introspectedTable.getRules();
@@ -119,26 +125,31 @@ public class DefaultDAOMethodNameCalculator implements DAOMethodNameCalculator {
         }
     }
 
+    @Override
     public String getSelectByPrimaryKeyMethodName(
             IntrospectedTable introspectedTable) {
         return "selectByPrimaryKey"; //$NON-NLS-1$
     }
 
+    @Override
     public String getUpdateByPrimaryKeySelectiveMethodName(
             IntrospectedTable introspectedTable) {
         return "updateByPrimaryKeySelective"; //$NON-NLS-1$
     }
 
+    @Override
     public String getCountByExampleMethodName(
             IntrospectedTable introspectedTable) {
         return "countByExample"; //$NON-NLS-1$
     }
 
+    @Override
     public String getUpdateByExampleSelectiveMethodName(
             IntrospectedTable introspectedTable) {
         return "updateByExampleSelective"; //$NON-NLS-1$
     }
 
+    @Override
     public String getUpdateByExampleWithBLOBsMethodName(
             IntrospectedTable introspectedTable) {
         Rules rules = introspectedTable.getRules();
@@ -152,6 +163,7 @@ public class DefaultDAOMethodNameCalculator implements DAOMethodNameCalculator {
         }
     }
 
+    @Override
     public String getUpdateByExampleWithoutBLOBsMethodName(
             IntrospectedTable introspectedTable) {
         Rules rules = introspectedTable.getRules();
@@ -165,6 +177,7 @@ public class DefaultDAOMethodNameCalculator implements DAOMethodNameCalculator {
         }
     }
 
+    @Override
     public String getInsertSelectiveMethodName(
             IntrospectedTable introspectedTable) {
         return "insertSelective"; //$NON-NLS-1$

@@ -1,17 +1,17 @@
-/*
- *  Copyright 2009 The Apache Software Foundation
+/**
+ *    Copyright 2006-2016 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.codegen.mybatis3.xmlmapper.elements;
 
@@ -22,7 +22,9 @@ import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 
 /**
+ * 
  * @author Jeff Butler
+ * 
  */
 public class SelectByExampleWithBLOBsElementGenerator extends
         AbstractXmlElementGenerator {
@@ -45,14 +47,8 @@ public class SelectByExampleWithBLOBsElementGenerator extends
 
         context.getCommentGenerator().addComment(answer);
 
-        /*添加分页查询*/
-        XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
-        ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
-        ifElement.addElement(new TextElement("select * from ( select * from (")); //$NON-NLS-1$
-        answer.addElement(ifElement);
-
         answer.addElement(new TextElement("select")); //$NON-NLS-1$
-        ifElement = new XmlElement("if"); //$NON-NLS-1$
+        XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
         ifElement.addAttribute(new Attribute("test", "distinct")); //$NON-NLS-1$ //$NON-NLS-2$
         ifElement.addElement(new TextElement("distinct")); //$NON-NLS-1$
         answer.addElement(ifElement);
@@ -62,7 +58,7 @@ public class SelectByExampleWithBLOBsElementGenerator extends
                 .getSelectByExampleQueryId())) {
             sb.append('\'');
             sb.append(introspectedTable.getSelectByExampleQueryId());
-            sb.append("' as QUERYID,ROWNUM as RN,"); //$NON-NLS-1$
+            sb.append("' as QUERYID,"); //$NON-NLS-1$
             answer.addElement(new TextElement(sb.toString()));
         }
 
@@ -80,12 +76,6 @@ public class SelectByExampleWithBLOBsElementGenerator extends
         ifElement = new XmlElement("if"); //$NON-NLS-1$
         ifElement.addAttribute(new Attribute("test", "orderByClause != null")); //$NON-NLS-1$ //$NON-NLS-2$
         ifElement.addElement(new TextElement("order by ${orderByClause}")); //$NON-NLS-1$
-        answer.addElement(ifElement);
-
-        /*添加分页查询*/
-        ifElement = new XmlElement("if"); //$NON-NLS-1$
-        ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
-        ifElement.addElement(new TextElement(") A where A.RN &lt;= #{limit} ) B where B.RN &gt; #{start}")); //$NON-NLS-1$
         answer.addElement(ifElement);
 
         if (context.getPlugins()

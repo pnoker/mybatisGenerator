@@ -1,17 +1,17 @@
-/*
- *  Copyright 2005 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.api;
 
@@ -33,7 +33,7 @@ public interface JavaTypeResolver {
      * Adds properties for this instance from any properties configured in the
      * JavaTypeResolverConfiguration.
      * 
-     * This method will be called before any of the get methods.
+     * <p>This method will be called before any of the get methods.
      * 
      * @param properties
      *            All properties from the configuration
@@ -43,7 +43,7 @@ public interface JavaTypeResolver {
     /**
      * Sets the instance of the Context object associated with this instance.
      * 
-     * This method will be called before any of the get methods.
+     * <p>This method will be called before any of the get methods.
      * 
      * @param context
      *            The current Context
@@ -51,12 +51,12 @@ public interface JavaTypeResolver {
     void setContext(Context context);
 
     /**
-     * The generator will supply a list to this method. The implementation class may
-     * add strings to the list that will be treated as warning messages and
-     * displayed to the user. The concept of a warning is that code generation
-     * can continue, but that the results may not be what is expected.
-     * 
+     * The generator will supply a list to this method. The implementation class may add strings to the list that will
+     * be treated as warning messages and displayed to the user. The concept of a warning is that code generation can
+     * continue, but that the results may not be what is expected.
+     *
      * @param warnings
+     *            the new warnings
      */
     void setWarnings(List<String> warnings);
 

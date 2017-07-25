@@ -1,17 +1,17 @@
-/*
- *  Copyright 2006 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.api.dom;
 
@@ -21,9 +21,13 @@ import java.util.TreeSet;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 
 /**
+ * The Class OutputUtilities.
+ *
  * @author Jeff Butler
  */
 public class OutputUtilities {
+
+    /** The Constant lineSeparator. */
     private static final String lineSeparator;
 
     static {
@@ -35,7 +39,7 @@ public class OutputUtilities {
     }
 
     /**
-     * Utility class - no instances allowed
+     * Utility class - no instances allowed.
      */
     private OutputUtilities() {
         super();
@@ -82,10 +86,11 @@ public class OutputUtilities {
     }
 
     /**
-     * returns a unique set of "import xxx;" Strings for the set of types
-     * 
+     * returns a unique set of "import xxx;" Strings for the set of types.
+     *
      * @param importedTypes
-     * @return
+     *            the imported types
+     * @return the sets the
      */
     public static Set<String> calculateImports(
             Set<FullyQualifiedJavaType> importedTypes) {

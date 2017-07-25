@@ -1,25 +1,25 @@
-/*
- *  Copyright 2008 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.plugins;
 
 import java.util.List;
 import java.util.Properties;
 
-import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.IntrospectedTable;
+import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.JavaVisibility;
@@ -28,11 +28,11 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 /**
  * This plugin adds the java.io.Serializable marker interface to all generated
  * model objects.
- * <p>
- * This plugin demonstrates adding capabilities to generated Java artifacts, and
+ * 
+ * <p>This plugin demonstrates adding capabilities to generated Java artifacts, and
  * shows the proper way to add imports to a compilation unit.
- * <p>
- * Important: This is a simplistic implementation of serializable and does not
+ * 
+ * <p>Important: This is a simplistic implementation of serializable and does not
  * attempt to do any versioning of classes.
  * 
  * @author Jeff Butler
@@ -51,6 +51,7 @@ public class SerializablePlugin extends PluginAdapter {
         gwtSerializable = new FullyQualifiedJavaType("com.google.gwt.user.client.rpc.IsSerializable"); //$NON-NLS-1$
     }
 
+    @Override
     public boolean validate(List<String> warnings) {
         // this plugin is always valid
         return true;
@@ -62,7 +63,7 @@ public class SerializablePlugin extends PluginAdapter {
         addGWTInterface = Boolean.valueOf(properties.getProperty("addGWTInterface")); //$NON-NLS-1$
         suppressJavaInterface = Boolean.valueOf(properties.getProperty("suppressJavaInterface")); //$NON-NLS-1$
     }
-    
+
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass,
             IntrospectedTable introspectedTable) {
@@ -90,7 +91,7 @@ public class SerializablePlugin extends PluginAdapter {
             topLevelClass.addImportedType(gwtSerializable);
             topLevelClass.addSuperInterface(gwtSerializable);
         }
-        
+
         if (!suppressJavaInterface) {
             topLevelClass.addImportedType(serializable);
             topLevelClass.addSuperInterface(serializable);

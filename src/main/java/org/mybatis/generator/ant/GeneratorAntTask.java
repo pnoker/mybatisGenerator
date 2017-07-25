@@ -1,17 +1,17 @@
-/*
- *  Copyright 2005 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.ant;
 
@@ -59,10 +59,10 @@ import org.mybatis.generator.internal.DefaultShellCallback;
  *  &lt;/project&gt;
  * </pre>
  * 
- * The task requires that the attribute "configFile" be set to an existing XML
+ * <p>The task requires that the attribute "configFile" be set to an existing XML
  * configuration file.
- * <p>
- * The task supports these optional attributes:
+ * 
+ * <p>The task supports these optional attributes:
  * <ul>
  * <li>"overwrite" - if true, then existing Java files will be overwritten. if
  * false (default), then existing Java files will be untouched and the generator
@@ -86,9 +86,6 @@ public class GeneratorAntTask extends Task {
     private String contextIds;
     private String fullyQualifiedTableNames;
 
-    /**
-     * 
-     */
     public GeneratorAntTask() {
         super();
     }
@@ -167,9 +164,8 @@ public class GeneratorAntTask extends Task {
             throw new BuildException(e.getMessage());
         } catch (InterruptedException e) {
             // ignore (will never happen with the DefaultShellCallback)
-            ;
         } catch (Exception e) {
-            e.printStackTrace();
+            log(e, Project.MSG_ERR);
             throw new BuildException(e.getMessage());
         }
 

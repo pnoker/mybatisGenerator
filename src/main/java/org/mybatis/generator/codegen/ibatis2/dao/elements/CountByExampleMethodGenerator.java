@@ -1,17 +1,17 @@
-/*
- *  Copyright 2008 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.codegen.ibatis2.dao.elements;
 
@@ -26,6 +26,7 @@ import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 
 /**
+ * Generates the Count By Example method.
  * 
  * @author Jeff Butler
  * 
@@ -43,11 +44,14 @@ public class CountByExampleMethodGenerator extends AbstractDAOElementGenerator {
     public void addImplementationElements(TopLevelClass topLevelClass) {
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
         Method method = getMethodShell(importedTypes);
+        if (generateForJava5) {
+            method.addAnnotation("@Override"); //$NON-NLS-1$
+        }
 
         // generate the implementation method
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Integer count = (Integer)  "); //$NON-NLS-1$
+        sb.append("Long count = (Long)  "); //$NON-NLS-1$
         sb.append(daoTemplate.getQueryForObjectMethod(introspectedTable
                 .getIbatis2SqlMapNamespace(), introspectedTable
                 .getCountByExampleStatementId(), "example")); //$NON-NLS-1$
@@ -56,7 +60,7 @@ public class CountByExampleMethodGenerator extends AbstractDAOElementGenerator {
         if (generateForJava5) {
             method.addBodyLine("return count;"); //$NON-NLS-1$
         } else {
-            method.addBodyLine("return count.intValue();"); //$NON-NLS-1$
+            method.addBodyLine("return count.longValue();"); //$NON-NLS-1$
         }
 
         if (context.getPlugins().clientCountByExampleMethodGenerated(method,
@@ -87,7 +91,7 @@ public class CountByExampleMethodGenerator extends AbstractDAOElementGenerator {
 
         Method method = new Method();
         method.setVisibility(getExampleMethodVisibility());
-        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
+        method.setReturnType(new FullyQualifiedJavaType("long")); //$NON-NLS-1$
         method.setName(getDAOMethodNameCalculator()
                 .getCountByExampleMethodName(introspectedTable));
         method.addParameter(new Parameter(type, "example")); //$NON-NLS-1$

@@ -1,23 +1,23 @@
-/*
- *  Copyright 2005 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.internal.db;
 
 /**
- * Typesafe enum of known database dialects
- * 
+ * Typesafe enum of known database dialects.
+ *
  * @author Jeff Butler
  */
 public enum DatabaseDialects {
@@ -34,9 +34,6 @@ public enum DatabaseDialects {
 
     private String identityRetrievalStatement;
 
-    /**
-     *  
-     */
     private DatabaseDialects(String identityRetrievalStatement) {
         this.identityRetrievalStatement = identityRetrievalStatement;
     }
@@ -46,10 +43,12 @@ public enum DatabaseDialects {
     }
 
     /**
-     * 
+     * Gets the database dialect.
+     *
      * @param database
-     * @return the database dialect for the selected database. May return null
-     *         if there is no known dialect for the selected db
+     *            the database
+     * @return the database dialect for the selected database. May return null if there is no known dialect for the
+     *         selected db
      */
     public static DatabaseDialects getDatabaseDialect(String database) {
         DatabaseDialects returnValue = null;

@@ -1,19 +1,18 @@
-/*
- *  Copyright 2006 The Apache Software Foundation
+/**
+ *    Copyright 2006-2016 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
-
 package org.mybatis.generator.api.dom.java;
 
 import java.util.ArrayList;
@@ -32,22 +31,32 @@ import org.mybatis.generator.api.dom.OutputUtilities;
  */
 public class InnerEnum extends JavaElement {
 
+    /** The fields. */
     private List<Field> fields;
 
+    /** The inner classes. */
     private List<InnerClass> innerClasses;
 
+    /** The inner enums. */
     private List<InnerEnum> innerEnums;
 
+    /** The type. */
     private FullyQualifiedJavaType type;
 
+    /** The super interface types. */
     private Set<FullyQualifiedJavaType> superInterfaceTypes;
 
+    /** The methods. */
     private List<Method> methods;
 
+    /** The enum constants. */
     private List<String> enumConstants;
 
     /**
-     * 
+     * Instantiates a new inner enum.
+     *
+     * @param type
+     *            the type
      */
     public InnerEnum(FullyQualifiedJavaType type) {
         super();
@@ -61,44 +70,90 @@ public class InnerEnum extends JavaElement {
     }
 
     /**
+     * Gets the fields.
+     *
      * @return Returns the fields.
      */
     public List<Field> getFields() {
         return fields;
     }
 
+    /**
+     * Adds the field.
+     *
+     * @param field
+     *            the field
+     */
     public void addField(Field field) {
         fields.add(field);
     }
 
     /**
+     * Gets the inner classes.
+     *
      * @return Returns the innerClasses.
      */
     public List<InnerClass> getInnerClasses() {
         return innerClasses;
     }
 
+    /**
+     * Adds the inner class.
+     *
+     * @param innerClass
+     *            the inner class
+     */
     public void addInnerClass(InnerClass innerClass) {
         innerClasses.add(innerClass);
     }
 
+    /**
+     * Gets the inner enums.
+     *
+     * @return the inner enums
+     */
     public List<InnerEnum> getInnerEnums() {
         return innerEnums;
     }
 
+    /**
+     * Adds the inner enum.
+     *
+     * @param innerEnum
+     *            the inner enum
+     */
     public void addInnerEnum(InnerEnum innerEnum) {
         innerEnums.add(innerEnum);
     }
 
+    /**
+     * Gets the enum constants.
+     *
+     * @return the enum constants
+     */
     public List<String> getEnumConstants() {
         return enumConstants;
     }
 
+    /**
+     * Adds the enum constant.
+     *
+     * @param enumConstant
+     *            the enum constant
+     */
     public void addEnumConstant(String enumConstant) {
         enumConstants.add(enumConstant);
     }
 
-    public String getFormattedContent(int indentLevel) {
+    /**
+     * Gets the formatted content.
+     *
+     * @param indentLevel
+     *            the indent level
+     * @param compilationUnit the compilation unit
+     * @return the formatted content
+     */
+    public String getFormattedContent(int indentLevel, CompilationUnit compilationUnit) {
         StringBuilder sb = new StringBuilder();
 
         addFormattedJavadoc(sb, indentLevel);
@@ -123,7 +178,7 @@ public class InnerEnum extends JavaElement {
                     comma = true;
                 }
 
-                sb.append(fqjt.getShortName());
+                sb.append(JavaDomUtils.calculateTypeName(compilationUnit, fqjt));
             }
         }
 
@@ -152,7 +207,7 @@ public class InnerEnum extends JavaElement {
         while (fldIter.hasNext()) {
             OutputUtilities.newLine(sb);
             Field field = fldIter.next();
-            sb.append(field.getFormattedContent(indentLevel));
+            sb.append(field.getFormattedContent(indentLevel, compilationUnit));
             if (fldIter.hasNext()) {
                 OutputUtilities.newLine(sb);
             }
@@ -166,7 +221,7 @@ public class InnerEnum extends JavaElement {
         while (mtdIter.hasNext()) {
             OutputUtilities.newLine(sb);
             Method method = mtdIter.next();
-            sb.append(method.getFormattedContent(indentLevel, false));
+            sb.append(method.getFormattedContent(indentLevel, false, compilationUnit));
             if (mtdIter.hasNext()) {
                 OutputUtilities.newLine(sb);
             }
@@ -180,7 +235,7 @@ public class InnerEnum extends JavaElement {
         while (icIter.hasNext()) {
             OutputUtilities.newLine(sb);
             InnerClass innerClass = icIter.next();
-            sb.append(innerClass.getFormattedContent(indentLevel));
+            sb.append(innerClass.getFormattedContent(indentLevel, compilationUnit));
             if (icIter.hasNext()) {
                 OutputUtilities.newLine(sb);
             }
@@ -194,7 +249,7 @@ public class InnerEnum extends JavaElement {
         while (ieIter.hasNext()) {
             OutputUtilities.newLine(sb);
             InnerEnum innerEnum = ieIter.next();
-            sb.append(innerEnum.getFormattedContent(indentLevel));
+            sb.append(innerEnum.getFormattedContent(indentLevel, compilationUnit));
             if (ieIter.hasNext()) {
                 OutputUtilities.newLine(sb);
             }
@@ -209,28 +264,46 @@ public class InnerEnum extends JavaElement {
     }
 
     /**
+     * Gets the super interface types.
+     *
      * @return Returns the superInterfaces.
      */
     public Set<FullyQualifiedJavaType> getSuperInterfaceTypes() {
         return superInterfaceTypes;
     }
 
+    /**
+     * Adds the super interface.
+     *
+     * @param superInterface
+     *            the super interface
+     */
     public void addSuperInterface(FullyQualifiedJavaType superInterface) {
         superInterfaceTypes.add(superInterface);
     }
 
     /**
+     * Gets the methods.
+     *
      * @return Returns the methods.
      */
     public List<Method> getMethods() {
         return methods;
     }
 
+    /**
+     * Adds the method.
+     *
+     * @param method
+     *            the method
+     */
     public void addMethod(Method method) {
         methods.add(method);
     }
 
     /**
+     * Gets the type.
+     *
      * @return Returns the type.
      */
     public FullyQualifiedJavaType getType() {

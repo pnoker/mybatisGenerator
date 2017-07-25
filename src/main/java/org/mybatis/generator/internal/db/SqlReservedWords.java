@@ -1,19 +1,18 @@
-/*
- *  Copyright 2008 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
-
 package org.mybatis.generator.internal.db;
 
 import java.util.HashSet;
@@ -25,7 +24,7 @@ import java.util.Set;
  * inclusive of many different databases - so it may include words that are not
  * reserved in some databases.
  * 
- * This list is based on the list from Drupal Handbook:
+ * <p>This list is based on the list from Drupal Handbook:
  * http://drupal.org/node/141051 With additions for DB2
  * 
  * @author Jeff Butler
@@ -971,7 +970,7 @@ public class SqlReservedWords {
     }
 
     /**
-     * Utility class - no instances allowed
+     * Utility class - no instances allowed.
      */
     private SqlReservedWords() {
     }

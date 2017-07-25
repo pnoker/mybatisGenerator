@@ -1,17 +1,17 @@
-/*
- *  Copyright 2005 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.api.dom.java;
 
@@ -23,45 +23,59 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
+ * The Class FullyQualifiedJavaType.
+ *
  * @author Jeff Butler
  */
 public class FullyQualifiedJavaType implements
         Comparable<FullyQualifiedJavaType> {
+    
     private static final String JAVA_LANG = "java.lang"; //$NON-NLS-1$
+
     private static FullyQualifiedJavaType intInstance = null;
+
     private static FullyQualifiedJavaType stringInstance = null;
+
     private static FullyQualifiedJavaType booleanPrimitiveInstance = null;
+
     private static FullyQualifiedJavaType objectInstance = null;
+
     private static FullyQualifiedJavaType dateInstance = null;
+
     private static FullyQualifiedJavaType criteriaInstance = null;
+
     private static FullyQualifiedJavaType generatedCriteriaInstance = null;
 
-    /**
-     * The short name without any generic arguments
-     */
+    /** The short name without any generic arguments. */
     private String baseShortName;
 
-    /**
-     * The fully qualified name without any generic arguments
-     */
+    /** The fully qualified name without any generic arguments. */
     private String baseQualifiedName;
 
     private boolean explicitlyImported;
+
     private String packageName;
+
     private boolean primitive;
+
+    private boolean isArray;
+
     private PrimitiveTypeWrapper primitiveTypeWrapper;
+
     private List<FullyQualifiedJavaType> typeArguments;
 
     // the following three values are used for dealing with wildcard types
     private boolean wildcardType;
+
     private boolean boundedWildcard;
+
     private boolean extendsBoundedWildcard;
 
     /**
-     * Use this constructor to construct a generic type with the specified type
-     * parameters
-     * 
+     * Use this constructor to construct a generic type with the specified type parameters.
+     *
      * @param fullTypeSpecification
+     *            the full type specification
      */
     public FullyQualifiedJavaType(String fullTypeSpecification) {
         super();
@@ -69,17 +83,13 @@ public class FullyQualifiedJavaType implements
         parse(fullTypeSpecification);
     }
 
-    /**
-     * @return Returns the explicitlyImported.
-     */
     public boolean isExplicitlyImported() {
         return explicitlyImported;
     }
 
     /**
-     * This method returns the fully qualified name - including any generic type
-     * parameters
-     * 
+     * Returns the fully qualified name - including any generic type parameters.
+     *
      * @return Returns the fullyQualifiedName.
      */
     public String getFullyQualifiedName() {
@@ -117,23 +127,29 @@ public class FullyQualifiedJavaType implements
         return sb.toString();
     }
 
+    public String getFullyQualifiedNameWithoutTypeParameters() {
+        return baseQualifiedName;
+    }
+
     /**
-     * Returns a list of Strings that are the fully qualified names of this
-     * type, and any generic type argument associated with this type.
+     * Returns a list of Strings that are the fully qualified names of this type, and any generic type argument
+     * associated with this type.
+     *
+     * @return the import list
      */
     public List<String> getImportList() {
         List<String> answer = new ArrayList<String>();
         if (isExplicitlyImported()) {
             int index = baseShortName.indexOf('.');
             if (index == -1) {
-                answer.add(baseQualifiedName);
+                answer.add(calculateActualImport(baseQualifiedName));
             } else {
                 // an inner class is specified, only import the top
                 // level class
                 StringBuilder sb = new StringBuilder();
                 sb.append(packageName);
                 sb.append('.');
-                sb.append(baseShortName.substring(0, index));
+                sb.append(calculateActualImport(baseShortName.substring(0, index)));
                 answer.add(sb.toString());
             }
         }
@@ -145,14 +161,24 @@ public class FullyQualifiedJavaType implements
         return answer;
     }
 
-    /**
-     * @return Returns the packageName.
-     */
+    private String calculateActualImport(String name) {
+        String answer = name;
+        if (this.isArray()) {
+            int index = name.indexOf("["); //$NON-NLS-1$
+            if (index != -1) {
+                answer = name.substring(0, index);
+            }
+        }
+        return answer;
+    }
+
     public String getPackageName() {
         return packageName;
     }
 
     /**
+     * Gets the short name.
+     *
      * @return Returns the shortName - including any type arguments.
      */
     public String getShortName() {
@@ -190,11 +216,10 @@ public class FullyQualifiedJavaType implements
         return sb.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+    public String getShortNameWithoutTypeArguments() {
+        return baseShortName;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -210,34 +235,23 @@ public class FullyQualifiedJavaType implements
         return getFullyQualifiedName().equals(other.getFullyQualifiedName());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return getFullyQualifiedName().hashCode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return getFullyQualifiedName();
     }
 
-    /**
-     * @return Returns the primitive.
-     */
     public boolean isPrimitive() {
         return primitive;
     }
 
     /**
+     * Gets the primitive type wrapper.
+     *
      * @return Returns the wrapperClass.
      */
     public PrimitiveTypeWrapper getPrimitiveTypeWrapper() {
@@ -326,11 +340,7 @@ public class FullyQualifiedJavaType implements
         return generatedCriteriaInstance;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
+    @Override
     public int compareTo(FullyQualifiedJavaType other) {
         return getFullyQualifiedName().compareTo(other.getFullyQualifiedName());
     }
@@ -348,11 +358,11 @@ public class FullyQualifiedJavaType implements
             if (spec.startsWith("extends ")) { //$NON-NLS-1$
                 boundedWildcard = true;
                 extendsBoundedWildcard = true;
-                spec = spec.substring(8);
+                spec = spec.substring(8);  // "extends ".length()
             } else if (spec.startsWith("super ")) { //$NON-NLS-1$
                 boundedWildcard = true;
                 extendsBoundedWildcard = false;
-                spec = spec.substring(6);
+                spec = spec.substring(6);  // "super ".length()
             } else {
                 boundedWildcard = false;
             }
@@ -363,8 +373,19 @@ public class FullyQualifiedJavaType implements
                 simpleParse(fullTypeSpecification);
             } else {
                 simpleParse(fullTypeSpecification.substring(0, index));
-                genericParse(fullTypeSpecification.substring(index));
+                int endIndex = fullTypeSpecification.lastIndexOf('>');
+                if (endIndex == -1) {
+                    throw new RuntimeException(getString(
+                            "RuntimeError.22", fullTypeSpecification)); //$NON-NLS-1$
+                }
+                genericParse(fullTypeSpecification.substring(index, endIndex + 1));
             }
+
+            // this is far from a perfect test for detecting arrays, but is close
+            // enough for most cases.  It will not detect an improperly specified
+            // array type like byte], but it will detect byte[] and byte[   ]
+            // which are both valid
+            isArray = fullTypeSpecification.endsWith("]"); //$NON-NLS-1$
         }
     }
 
@@ -378,7 +399,7 @@ public class FullyQualifiedJavaType implements
             if (index != -1) {
                 baseShortName = baseShortName.substring(index + 1);
             }
-            
+
             if (JAVA_LANG.equals(packageName)) { //$NON-NLS-1$
                 explicitlyImported = false;
             } else {
@@ -426,6 +447,7 @@ public class FullyQualifiedJavaType implements
     private void genericParse(String genericSpecification) {
         int lastIndex = genericSpecification.lastIndexOf('>');
         if (lastIndex == -1) {
+            // shouldn't happen - should be caught already, but just in case...
             throw new RuntimeException(getString(
                     "RuntimeError.22", genericSpecification)); //$NON-NLS-1$
         }
@@ -469,16 +491,24 @@ public class FullyQualifiedJavaType implements
     /**
      * Returns the package name of a fully qualified type.
      * 
-     * This method calculates the package as the part of the fully
-     * qualified name up to, but not including, the last element.  Therefore,
-     * it does not support fully qualified inner classes.
-     * Not totally fool proof, but correct in most instances.
-     * 
+     * <p>This method calculates the package as the part of the fully qualified name up to, but not including, the last
+     * element. Therefore, it does not support fully qualified inner classes. Not totally fool proof, but correct in
+     * most instances.
+     *
      * @param baseQualifiedName
-     * @return
+     *            the base qualified name
+     * @return the package
      */
     private static String getPackage(String baseQualifiedName) {
         int index = baseQualifiedName.lastIndexOf('.');
         return baseQualifiedName.substring(0, index);
+    }
+
+    public boolean isArray() {
+        return isArray;
+    }
+
+    public List<FullyQualifiedJavaType> getTypeArguments() {
+        return typeArguments;
     }
 }

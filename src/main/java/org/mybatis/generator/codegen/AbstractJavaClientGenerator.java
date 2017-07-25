@@ -1,17 +1,17 @@
-/*
- *  Copyright 2010 The MyBatis Team
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.codegen;
 
@@ -27,25 +27,27 @@ package org.mybatis.generator.codegen;
 public abstract class AbstractJavaClientGenerator extends AbstractJavaGenerator {
 
     private boolean requiresXMLGenerator;
-    
+
     public AbstractJavaClientGenerator(boolean requiresXMLGenerator) {
         super();
         this.requiresXMLGenerator = requiresXMLGenerator;
     }
 
     /**
-     * @return true if matching XML is required
+     * Returns true is a matching XML generator is required.
+     * 
+     * @return true if matching XML is generator required
      */
     public boolean requiresXMLGenerator() {
         return requiresXMLGenerator;
     }
-    
+
     /**
-     * This method returns an instance of the XML generator associated
+     * Returns an instance of the XML generator associated
      * with this client generator.
      * 
      * @return the matched XML generator.  May return null if no
-     * XML is required by this generator
+     *     XML is required by this generator
      */
     public abstract AbstractXmlGenerator getMatchedXMLGenerator();
 }

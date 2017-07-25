@@ -1,17 +1,17 @@
-/*
- *  Copyright 2005 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.internal.types;
 
@@ -45,7 +45,7 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
     protected boolean forceBigDecimals;
 
     protected Map<Integer, JdbcTypeInformation> typeMap;
-    
+
     public JavaTypeResolverDefaultImpl() {
         super();
         properties = new Properties();
@@ -71,6 +71,8 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
                 new FullyQualifiedJavaType(Object.class.getName())));
         typeMap.put(Types.DATE, new JdbcTypeInformation("DATE", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Date.class.getName())));
+        typeMap.put(Types.DECIMAL, new JdbcTypeInformation("DECIMAL", //$NON-NLS-1$
+                new FullyQualifiedJavaType(BigDecimal.class.getName())));
         typeMap.put(Types.DISTINCT, new JdbcTypeInformation("DISTINCT", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Object.class.getName())));
         typeMap.put(Types.DOUBLE, new JdbcTypeInformation("DOUBLE", //$NON-NLS-1$
@@ -81,21 +83,23 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
                 new FullyQualifiedJavaType(Integer.class.getName())));
         typeMap.put(Types.JAVA_OBJECT, new JdbcTypeInformation("JAVA_OBJECT", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Object.class.getName())));
-        typeMap.put(Jdbc4Types.LONGNVARCHAR, new JdbcTypeInformation("LONGNVARCHAR", //$NON-NLS-1$
+        typeMap.put(Types.LONGNVARCHAR, new JdbcTypeInformation("LONGNVARCHAR", //$NON-NLS-1$
                 new FullyQualifiedJavaType(String.class.getName())));
         typeMap.put(Types.LONGVARBINARY, new JdbcTypeInformation(
                 "LONGVARBINARY", //$NON-NLS-1$
                 new FullyQualifiedJavaType("byte[]"))); //$NON-NLS-1$
         typeMap.put(Types.LONGVARCHAR, new JdbcTypeInformation("LONGVARCHAR", //$NON-NLS-1$
                 new FullyQualifiedJavaType(String.class.getName())));
-        typeMap.put(Jdbc4Types.NCHAR, new JdbcTypeInformation("NCHAR", //$NON-NLS-1$
+        typeMap.put(Types.NCHAR, new JdbcTypeInformation("NCHAR", //$NON-NLS-1$
                 new FullyQualifiedJavaType(String.class.getName())));
-        typeMap.put(Jdbc4Types.NCLOB, new JdbcTypeInformation("NCLOB", //$NON-NLS-1$
+        typeMap.put(Types.NCLOB, new JdbcTypeInformation("NCLOB", //$NON-NLS-1$
                 new FullyQualifiedJavaType(String.class.getName())));
-        typeMap.put(Jdbc4Types.NVARCHAR, new JdbcTypeInformation("NVARCHAR", //$NON-NLS-1$
+        typeMap.put(Types.NVARCHAR, new JdbcTypeInformation("NVARCHAR", //$NON-NLS-1$
                 new FullyQualifiedJavaType(String.class.getName())));
         typeMap.put(Types.NULL, new JdbcTypeInformation("NULL", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Object.class.getName())));
+        typeMap.put(Types.NUMERIC, new JdbcTypeInformation("NUMERIC", //$NON-NLS-1$
+                new FullyQualifiedJavaType(BigDecimal.class.getName())));
         typeMap.put(Types.OTHER, new JdbcTypeInformation("OTHER", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Object.class.getName())));
         typeMap.put(Types.REAL, new JdbcTypeInformation("REAL", //$NON-NLS-1$
@@ -116,9 +120,9 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
                 new FullyQualifiedJavaType("byte[]"))); //$NON-NLS-1$
         typeMap.put(Types.VARCHAR, new JdbcTypeInformation("VARCHAR", //$NON-NLS-1$
                 new FullyQualifiedJavaType(String.class.getName())));
-        
     }
 
+    @Override
     public void addConfigurationProperties(Properties properties) {
         this.properties.putAll(properties);
         forceBigDecimals = StringUtility
@@ -126,69 +130,86 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
                         .getProperty(PropertyRegistry.TYPE_RESOLVER_FORCE_BIG_DECIMALS));
     }
 
+    @Override
     public FullyQualifiedJavaType calculateJavaType(
             IntrospectedColumn introspectedColumn) {
-        FullyQualifiedJavaType answer;
+        FullyQualifiedJavaType answer = null;
         JdbcTypeInformation jdbcTypeInformation = typeMap
                 .get(introspectedColumn.getJdbcType());
 
-        if (jdbcTypeInformation == null) {
-            switch (introspectedColumn.getJdbcType()) {
-            case Types.DECIMAL:
-            case Types.NUMERIC:
-                if (introspectedColumn.getScale() > 0
-                        || introspectedColumn.getLength() > 18
-                        || forceBigDecimals) {
-                    answer = new FullyQualifiedJavaType(BigDecimal.class
-                            .getName());
-                } else if (introspectedColumn.getLength() > 9) {
-                    answer = new FullyQualifiedJavaType(Long.class.getName());
-                } else if (introspectedColumn.getLength() > 4) {
-                    answer = new FullyQualifiedJavaType(Integer.class.getName());
-                } else {
-                    answer = new FullyQualifiedJavaType(Short.class.getName());
-                }
-                break;
-
-            default:
-                answer = null;
-                break;
-            }
-        } else {
+        if (jdbcTypeInformation != null) {
             answer = jdbcTypeInformation.getFullyQualifiedJavaType();
+            answer = overrideDefaultType(introspectedColumn, answer);
+        }
+
+        return answer;
+    }
+    
+    protected FullyQualifiedJavaType overrideDefaultType(IntrospectedColumn column, FullyQualifiedJavaType defaultType) {
+        FullyQualifiedJavaType answer = defaultType;
+
+        switch (column.getJdbcType()) {
+        case Types.BIT:
+            answer = calculateBitReplacement(column, defaultType);
+            break;
+        case Types.DECIMAL:
+        case Types.NUMERIC:
+            answer = calculateBigDecimalReplacement(column, defaultType);
+            break;
+        default:
+            break;
+        }
+
+        return answer;
+    }
+    
+    protected FullyQualifiedJavaType calculateBitReplacement(IntrospectedColumn column, FullyQualifiedJavaType defaultType) {
+        FullyQualifiedJavaType answer;
+
+        if (column.getLength() > 1) {
+            answer = new FullyQualifiedJavaType("byte[]"); //$NON-NLS-1$
+        } else {
+            answer = defaultType;
+        }
+
+        return answer;
+    }
+    
+    protected FullyQualifiedJavaType calculateBigDecimalReplacement(IntrospectedColumn column, FullyQualifiedJavaType defaultType) {
+        FullyQualifiedJavaType answer;
+
+        if (column.getScale() > 0 || column.getLength() > 18 || forceBigDecimals) {
+            answer = defaultType;
+        } else if (column.getLength() > 9) {
+            answer = new FullyQualifiedJavaType(Long.class.getName());
+        } else if (column.getLength() > 4) {
+            answer = new FullyQualifiedJavaType(Integer.class.getName());
+        } else {
+            answer = new FullyQualifiedJavaType(Short.class.getName());
         }
 
         return answer;
     }
 
+    @Override
     public String calculateJdbcTypeName(IntrospectedColumn introspectedColumn) {
-        String answer;
+        String answer = null;
         JdbcTypeInformation jdbcTypeInformation = typeMap
                 .get(introspectedColumn.getJdbcType());
 
-        if (jdbcTypeInformation == null) {
-            switch (introspectedColumn.getJdbcType()) {
-            case Types.DECIMAL:
-                answer = "DECIMAL"; //$NON-NLS-1$
-                break;
-            case Types.NUMERIC:
-                answer = "NUMERIC"; //$NON-NLS-1$
-                break;
-            default:
-                answer = null;
-                break;
-            }
-        } else {
+        if (jdbcTypeInformation != null) {
             answer = jdbcTypeInformation.getJdbcTypeName();
         }
 
         return answer;
     }
 
+    @Override
     public void setWarnings(List<String> warnings) {
         this.warnings = warnings;
     }
 
+    @Override
     public void setContext(Context context) {
         this.context = context;
     }

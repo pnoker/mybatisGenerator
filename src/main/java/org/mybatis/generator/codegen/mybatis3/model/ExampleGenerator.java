@@ -1,17 +1,17 @@
-/*
- *  Copyright 2009 The Apache Software Foundation
+/**
+ *    Copyright 2006-2017 the original author or authors.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.mybatis.generator.codegen.mybatis3.model;
 
@@ -39,7 +39,9 @@ import org.mybatis.generator.codegen.AbstractJavaGenerator;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 
 /**
+ * 
  * @author Jeff Butler
+ * 
  */
 public class ExampleGenerator extends AbstractJavaGenerator {
 
@@ -66,22 +68,6 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         method.setConstructor(true);
         method.setName(type.getShortName());
         method.addBodyLine("oredCriteria = new ArrayList<Criteria>();"); //$NON-NLS-1$
-
-        commentGenerator.addGeneralMethodComment(method, introspectedTable);
-        topLevelClass.addMethod(method);
-
-        /*构造方法*/
-        method = new Method();
-        method.setVisibility(JavaVisibility.PUBLIC);
-        method.setConstructor(true);
-        method.setName(type.getShortName());
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getIntInstance(), "start"));
-        method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getIntInstance(), "limit"));
-        method.addBodyLine("this.start = start;\n" +
-                "        this.limit = limit;\n" +
-                "        oredCriteria = new ArrayList<Criteria>();"); //$NON-NLS-1$
 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
         topLevelClass.addMethod(method);
@@ -136,21 +122,6 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         method.addBodyLine("return distinct;"); //$NON-NLS-1$
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
         topLevelClass.addMethod(method);
-
-        //start limit for page
-        field = new Field();
-        field.setVisibility(JavaVisibility.PROTECTED);
-        field.setType(FullyQualifiedJavaType.getIntInstance());
-        field.setName("start"); //$NON-NLS-1$
-        commentGenerator.addFieldComment(field, introspectedTable);
-        topLevelClass.addField(field);
-
-        field = new Field();
-        field.setVisibility(JavaVisibility.PROTECTED);
-        field.setType(FullyQualifiedJavaType.getIntInstance());
-        field.setName("limit"); //$NON-NLS-1$
-        commentGenerator.addFieldComment(field, introspectedTable);
-        topLevelClass.addField(field);
 
         // add field and methods for the list of ored criteria
         field = new Field();
@@ -224,9 +195,9 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         topLevelClass
                 .addInnerClass(getGeneratedCriteriaInnerClass(topLevelClass));
 
-        topLevelClass.addInnerClass(getCriteriaInnerClass(topLevelClass));
+        topLevelClass.addInnerClass(getCriteriaInnerClass());
 
-        topLevelClass.addInnerClass(getCriterionInnerClass(topLevelClass));
+        topLevelClass.addInnerClass(getCriterionInnerClass());
 
         List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
         if (context.getPlugins().modelExampleClassGenerated(
@@ -236,10 +207,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         return answer;
     }
 
-    private InnerClass getCriterionInnerClass(TopLevelClass topLevelClass) {
-        Field field;
-        Method method;
-
+    private InnerClass getCriterionInnerClass() {
         InnerClass answer = new InnerClass(new FullyQualifiedJavaType(
                 "Criterion")); //$NON-NLS-1$
         answer.setVisibility(JavaVisibility.PUBLIC);
@@ -247,7 +215,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         context.getCommentGenerator().addClassComment(answer,
                 introspectedTable);
 
-        field = new Field();
+        Field field = new Field();
         field.setName("condition"); //$NON-NLS-1$
         field.setType(FullyQualifiedJavaType.getStringInstance());
         field.setVisibility(JavaVisibility.PRIVATE);
@@ -303,7 +271,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         answer.addField(field);
         answer.addMethod(getGetter(field));
 
-        method = new Method();
+        Method method = new Method();
         method.setVisibility(JavaVisibility.PROTECTED);
         method.setName("Criterion"); //$NON-NLS-1$
         method.setConstructor(true);
@@ -383,9 +351,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         return answer;
     }
 
-    private InnerClass getCriteriaInnerClass(TopLevelClass topLevelClass) {
-        Method method;
-
+    private InnerClass getCriteriaInnerClass() {
         InnerClass answer = new InnerClass(FullyQualifiedJavaType
                 .getCriteriaInstance());
 
@@ -397,7 +363,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         context.getCommentGenerator().addClassComment(answer,
                 introspectedTable, true);
 
-        method = new Method();
+        Method method = new Method();
         method.setVisibility(JavaVisibility.PROTECTED);
         method.setName("Criteria"); //$NON-NLS-1$
         method.setConstructor(true);
@@ -410,7 +376,6 @@ public class ExampleGenerator extends AbstractJavaGenerator {
     private InnerClass getGeneratedCriteriaInnerClass(
             TopLevelClass topLevelClass) {
         Field field;
-        Method method;
 
         InnerClass answer = new InnerClass(FullyQualifiedJavaType
                 .getGeneratedCriteriaInstance());
@@ -421,7 +386,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         context.getCommentGenerator().addClassComment(answer,
                 introspectedTable);
 
-        method = new Method();
+        Method method = new Method();
         method.setVisibility(JavaVisibility.PROTECTED);
         method.setName("GeneratedCriteria"); //$NON-NLS-1$
         method.setConstructor(true);
@@ -478,7 +443,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
             field.setVisibility(JavaVisibility.PROTECTED);
             answer.addField(field);
         }
-
+        
         method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setName("getAllCriteria"); //$NON-NLS-1$
@@ -788,7 +753,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
     }
 
     private Method getSingleValueMethod(IntrospectedColumn introspectedColumn,
-                                        String nameFragment, String operator) {
+            String nameFragment, String operator) {
         Method method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.addParameter(new Parameter(introspectedColumn
@@ -833,9 +798,9 @@ public class ExampleGenerator extends AbstractJavaGenerator {
 
     /**
      * Generates methods that set between and not between conditions
-     *
-     * @param introspectedColumn
-     * @param betweenMethod
+     * 
+     * @param introspectedColumn the introspected column
+     * @param betweenMethod true if between, else not between
      * @return a generated method for the between or not between method
      */
     private Method getSetBetweenOrNotBetweenMethod(
@@ -893,13 +858,16 @@ public class ExampleGenerator extends AbstractJavaGenerator {
     }
 
     /**
-     * @param introspectedColumn
-     * @param inMethod           if true generates an "in" method, else generates a "not in"
-     *                           method
+     * Generates an In or NotIn method.
+     * 
+     * @param introspectedColumn the introspected column
+     * @param inMethod
+     *            if true generates an "in" method, else generates a "not in"
+     *            method
      * @return a generated method for the in or not in method
      */
     private Method getSetInOrNotInMethod(IntrospectedColumn introspectedColumn,
-                                         boolean inMethod) {
+            boolean inMethod) {
         Method method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         FullyQualifiedJavaType type = FullyQualifiedJavaType
@@ -958,7 +926,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
     }
 
     private Method getNoValueMethod(IntrospectedColumn introspectedColumn,
-                                    String nameFragment, String operator) {
+            String nameFragment, String operator) {
         Method method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         StringBuilder sb = new StringBuilder();
@@ -984,23 +952,22 @@ public class ExampleGenerator extends AbstractJavaGenerator {
     /**
      * This method adds all the extra methods and fields required to support a
      * user defined type handler on some column.
-     *
-     * @param introspectedColumn
-     * @param constructor
-     * @param innerClass
+     * 
+     * @param introspectedColumn the introspected column
+     * @param constructor the constructor
+     * @param innerClass the enclosing class
      * @return the name of the List added to the class by this method
      */
     private String addtypeHandledObjectsAndMethods(
             IntrospectedColumn introspectedColumn, Method constructor,
             InnerClass innerClass) {
-        String answer;
         StringBuilder sb = new StringBuilder();
 
         // add new private field and public accessor in the class
         sb.setLength(0);
         sb.append(introspectedColumn.getJavaProperty());
         sb.append("Criteria"); //$NON-NLS-1$
-        answer = sb.toString();
+        String answer = sb.toString();
 
         Field field = new Field();
         field.setVisibility(JavaVisibility.PROTECTED);
@@ -1071,14 +1038,14 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         if (!introspectedColumn.getFullyQualifiedJavaType().isPrimitive()) {
             method.addBodyLine("if (value1 == null || value2 == null) {"); //$NON-NLS-1$
             method
-                    .addBodyLine("throw new RuntimeException(\"Between values for \" + property + \" cannot be null\");"); //$NON-NLS-1$
+                .addBodyLine("throw new RuntimeException(\"Between values for \" + property + \" cannot be null\");"); //$NON-NLS-1$
             method.addBodyLine("}"); //$NON-NLS-1$
         }
 
         method.addBodyLine(
                 String.format("%s.add(new Criterion(condition, value1, value2, \"%s\"));", //$NON-NLS-1$
                         field.getName(), introspectedColumn.getTypeHandler()));
-
+        
         method.addBodyLine("allCriteria = null;"); //$NON-NLS-1$
         innerClass.addMethod(method);
 
