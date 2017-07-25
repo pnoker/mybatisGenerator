@@ -61,7 +61,6 @@ public class SelectByExampleWithoutBLOBsElementGenerator extends
         if (stringHasValue(introspectedTable.getSelectByExampleQueryId())) {
             sb.append('\'');
             sb.append(introspectedTable.getSelectByExampleQueryId());
-            //Oracle 获取行号，用于分页
             sb.append("' as QUERYID,ROWNUM as RN,");
             answer.addElement(new TextElement(sb.toString()));
         }
