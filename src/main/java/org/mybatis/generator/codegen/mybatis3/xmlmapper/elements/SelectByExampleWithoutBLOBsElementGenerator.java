@@ -1,17 +1,17 @@
 /**
- *    Copyright 2006-2016 the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright 2006-2016 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.mybatis.generator.codegen.mybatis3.xmlmapper.elements;
 
@@ -22,9 +22,7 @@ import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 
 /**
- * 
  * @author Jeff Butler
- * 
  */
 public class SelectByExampleWithoutBLOBsElementGenerator extends
         AbstractXmlElementGenerator {
@@ -47,26 +45,31 @@ public class SelectByExampleWithoutBLOBsElementGenerator extends
 
         context.getCommentGenerator().addComment(answer);
 
-        answer.addElement(new TextElement("select")); //$NON-NLS-1$
+        //Oracle添加分页功能 -> start
         XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
+        ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
+        ifElement.addElement(new TextElement("select * from ( select * from (")); //$NON-NLS-1$
+        answer.addElement(ifElement);
+
+        answer.addElement(new TextElement("select")); //$NON-NLS-1$
+        ifElement = new XmlElement("if"); //$NON-NLS-1$
         ifElement.addAttribute(new Attribute("test", "distinct")); //$NON-NLS-1$ //$NON-NLS-2$
         ifElement.addElement(new TextElement("distinct")); //$NON-NLS-1$
         answer.addElement(ifElement);
 
         StringBuilder sb = new StringBuilder();
-        if (stringHasValue(introspectedTable
-                .getSelectByExampleQueryId())) {
+        if (stringHasValue(introspectedTable.getSelectByExampleQueryId())) {
             sb.append('\'');
             sb.append(introspectedTable.getSelectByExampleQueryId());
-            sb.append("' as QUERYID,"); //$NON-NLS-1$
+            //Oracle 获取行号，用于分页
+            sb.append("' as QUERYID,ROWNUM as RN,");
             answer.addElement(new TextElement(sb.toString()));
         }
         answer.addElement(getBaseColumnListElement());
 
         sb.setLength(0);
         sb.append("from "); //$NON-NLS-1$
-        sb.append(introspectedTable
-                .getAliasedFullyQualifiedTableNameAtRuntime());
+        sb.append(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime());
         answer.addElement(new TextElement(sb.toString()));
         answer.addElement(getExampleIncludeElement());
 
@@ -75,9 +78,13 @@ public class SelectByExampleWithoutBLOBsElementGenerator extends
         ifElement.addElement(new TextElement("order by ${orderByClause}")); //$NON-NLS-1$
         answer.addElement(ifElement);
 
-        if (context.getPlugins()
-                .sqlMapSelectByExampleWithoutBLOBsElementGenerated(answer,
-                        introspectedTable)) {
+        //Oracle添加分页功能 -> end
+        ifElement = new XmlElement("if"); //$NON-NLS-1$
+        ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
+        ifElement.addElement(new TextElement(") A where A.RN &lt;= #{limit} ) B where B.RN &gt; #{start}")); //$NON-NLS-1$
+        answer.addElement(ifElement);
+
+        if (context.getPlugins().sqlMapSelectByExampleWithoutBLOBsElementGenerated(answer, introspectedTable)) {
             parentElement.addElement(answer);
         }
     }
