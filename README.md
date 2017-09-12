@@ -19,55 +19,41 @@
 #48行，请参考具体文件内容
 XmlElement ifElement = new XmlElement("if");
 ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0"));
-ifElement.addElement(new TextElement("select * from ( select * from ("));
+ifElement.addElement(new TextElement("select * from ( select * from ( select ROWNUM as RN , A.* from ("));
 ```
 
 ```java
 #85行，请参考具体文件内容
 ifElement = new XmlElement("if");
 ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0"));
-ifElement.addElement(new TextElement(") A where A.RN &lt;= #{limit} ) B where B.RN &gt; #{start}"));
+ifElement.addElement(new TextElement(") A ) B where B.RN &lt;= #{limit} ) C where C.RN &gt; #{start}"));
 answer.addElement(ifElement);
 ```
 
-**1.2** 修改`' as QUERYID,` 为 `' as QUERYID,ROWNUM as RN,`，使用ROWNUM进行分页
-```java
-        StringBuilder sb = new StringBuilder();
-        if (stringHasValue(introspectedTable
-                .getSelectByExampleQueryId())) {
-            sb.append('\'');
-            sb.append(introspectedTable.getSelectByExampleQueryId());
-            sb.append("' as QUERYID,ROWNUM as RN,"); //$NON-NLS-1$
-            answer.addElement(new TextElement(sb.toString()));
-        }
-```
-
-**1.3** 生成Mapping.xml文件中select语句为：
+**1.2** 生成Mapping.xml文件中select语句为：
 
 ```xml
-<select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.cmcc.emp.model.AlgoExample" >
-    <if test="start != 0 or limit != 0" >
-      select * from ( select * from (
-    </if>
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    'true' as QUERYID,ROWNUM as RN,
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from EMP_ALGO
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-    <if test="start != 0 or limit != 0" >
-      ) A where A.RN &lt;= #{limit} ) B where B.RN &gt; #{start}
-    </if>
-  </select>
+<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cmcc.emp.model.AlermExample">
+        <if test="start != 0 or limit != 0">
+            select * from ( select * from ( select ROWNUM as RN , A.* from (
+        </if>
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        'true' as QUERYID,
+        <include refid="Base_Column_List"/>
+        from EMP_ALERM
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="start != 0 or limit != 0">
+            ) A ) B where B.RN &lt;= #{limit} ) C where C.RN &gt; #{start}
+        </if>
+    </select>
 ```
 
 **2** 修改`model`文件（文件位置：src\main\java\org\mybatis\generator\codegen\mybatis3\model\）
@@ -258,13 +244,13 @@ idea导入maven
 在IDE上修改完代码后，在项目根目录下命令行执行：`mvn inseall`,当出错时使用：`mvn clean`进行清空，
 `mvn inseall`之后，会在target文件下生成两个jar包：
 
-- mybatis-generator-core-oracle-1.3.2.jar，需要使用的jar
-- mybatis-generator-core-oracle-1.3.2-sources.jar，源码
+- mybatis-generator-core-oracle-1.3.6.jar，需要使用的jar
+- mybatis-generator-core-oracle-1.3.6-sources.jar，源码
 
 ### 3.如何生成Dao、Model、Mapping
 
 ```bash
-java -jar src/main/webapp/WEB-INF/lib/mybatis-generator-core-oracle-1.3.2.jar -configfile generatorConfig.xml -overwrite
+java -jar src/main/webapp/WEB-INF/lib/mybatis-generator-core-oracle-1.3.6.jar -configfile generatorConfig.xml -overwrite
 ```
 
 
