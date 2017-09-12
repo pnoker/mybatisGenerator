@@ -48,7 +48,7 @@ public class SelectByExampleWithoutBLOBsElementGenerator extends
         //Oracle添加分页功能 -> start
         XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
         ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
-        ifElement.addElement(new TextElement("select * from ( select * from (")); //$NON-NLS-1$
+        ifElement.addElement(new TextElement("select * from ( select * from ( select ROWNUM as RN , A.* from (")); //$NON-NLS-1$
         answer.addElement(ifElement);
 
         answer.addElement(new TextElement("select")); //$NON-NLS-1$
@@ -61,7 +61,7 @@ public class SelectByExampleWithoutBLOBsElementGenerator extends
         if (stringHasValue(introspectedTable.getSelectByExampleQueryId())) {
             sb.append('\'');
             sb.append(introspectedTable.getSelectByExampleQueryId());
-            sb.append("' as QUERYID,ROWNUM as RN,");
+            sb.append("' as QUERYID,");
             answer.addElement(new TextElement(sb.toString()));
         }
         answer.addElement(getBaseColumnListElement());
@@ -80,7 +80,7 @@ public class SelectByExampleWithoutBLOBsElementGenerator extends
         //Oracle添加分页功能 -> end
         ifElement = new XmlElement("if"); //$NON-NLS-1$
         ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
-        ifElement.addElement(new TextElement(") A where A.RN &lt;= #{limit} ) B where B.RN &gt; #{start}")); //$NON-NLS-1$
+        ifElement.addElement(new TextElement(") A ) B where B.RN &lt;= #{limit} ) C where C.RN &gt; #{start}")); //$NON-NLS-1$
         answer.addElement(ifElement);
 
         if (context.getPlugins().sqlMapSelectByExampleWithoutBLOBsElementGenerated(answer, introspectedTable)) {
