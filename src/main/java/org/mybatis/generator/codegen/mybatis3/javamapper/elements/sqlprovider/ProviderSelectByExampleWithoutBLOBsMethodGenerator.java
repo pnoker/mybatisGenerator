@@ -1,17 +1,17 @@
 /**
- *    Copyright 2006-2017 the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright 2006-2017 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.mybatis.generator.codegen.mybatis3.javamapper.elements.sqlprovider;
 
@@ -30,9 +30,9 @@ import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 
 /**
- * 
+ *
  * @author Jeff Butler
- * 
+ *
  */
 public class ProviderSelectByExampleWithoutBLOBsMethodGenerator extends AbstractJavaProviderMethodGenerator {
 
@@ -63,10 +63,10 @@ public class ProviderSelectByExampleWithoutBLOBsMethodGenerator extends Abstract
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setReturnType(FullyQualifiedJavaType.getStringInstance());
         method.addParameter(new Parameter(fqjt, "example")); //$NON-NLS-1$
-        
+
         context.getCommentGenerator().addGeneralMethodComment(method,
                 introspectedTable);
-        
+
         if (useLegacyBuilder) {
             method.addBodyLine("BEGIN();"); //$NON-NLS-1$
         } else {
@@ -93,19 +93,43 @@ public class ProviderSelectByExampleWithoutBLOBsMethodGenerator extends Abstract
 
             distinctCheck = false;
         }
-
+        // 检查是否分页，添加分页子表
+        method.addBodyLine("SQL subSql = new SQL();");
+        method.addBodyLine("if( example.startRow !=0 && example.endRow != 0 ){");
+        
+        method.addBodyLine("SQL intSql = new SQL();");
+        method.addBodyLine("intSql.SELECT(\"*\");");
+        method.addBodyLine(
+                String.format("intSql.FROM(\"%s\");",
+                        escapeStringForJava(introspectedTable.getFullyQualifiedTableNameAtRuntime())));
+        method.addBodyLine("applyWhere(intSql, example, false);");
+        
+        method.addBodyLine("if (example != null && example.getOrderByClause() != null) {"); //$NON-NLS-1$
+        method.addBodyLine(String.format("intSql.ORDER_BY(example.getOrderByClause());", builderPrefix)); //$NON-NLS-1$
+        method.addBodyLine("}");
+        
+        method.addBodyLine("subSql.SELECT(\"rn_table.*\");");
+        method.addBodyLine("subSql.SELECT(\"rownum rn\");");
+        method.addBodyLine("subSql.FROM(\"(\" + intSql.toString() + \") rn_table\") ;");
+        method.addBodyLine("subSql.WHERE(\"rownum <= \" + example.endRow);");
+        method.addBodyLine("} else {");
         method.addBodyLine(String.format("%sFROM(\"%s\");", //$NON-NLS-1$
                 builderPrefix,
                 escapeStringForJava(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime())));
-        if (useLegacyBuilder) {
-            method.addBodyLine("applyWhere(example, false);"); //$NON-NLS-1$
-        } else {
-            method.addBodyLine("applyWhere(sql, example, false);"); //$NON-NLS-1$
-        }
-
-        method.addBodyLine(""); //$NON-NLS-1$
+        method.addBodyLine("applyWhere(sql, example, false);");
+        
         method.addBodyLine("if (example != null && example.getOrderByClause() != null) {"); //$NON-NLS-1$
         method.addBodyLine(String.format("%sORDER_BY(example.getOrderByClause());", builderPrefix)); //$NON-NLS-1$
+        method.addBodyLine("}");
+        
+        method.addBodyLine("}");
+        
+        method.addBodyLine(""); //$NON-NLS-1$
+        
+        method.addBodyLine("if( example.startRow !=0 && example.endRow != 0 ){");
+        method.addBodyLine(String.format("%sFROM(\"(\" + subSql.toString() + \")\");",
+                builderPrefix));
+        method.addBodyLine(String.format("%sWHERE(\"rn >= \" + example.startRow);", builderPrefix));
         method.addBodyLine("}"); //$NON-NLS-1$
 
         method.addBodyLine(""); //$NON-NLS-1$

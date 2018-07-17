@@ -46,7 +46,7 @@ public class SelectByExampleWithBLOBsElementGenerator extends
 
         //Oracle添加分页功能 -> start
         XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
-        ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
+        ifElement.addAttribute(new Attribute("test", "startRow != 0 or endRow != 0")); //$NON-NLS-1$ //$NON-NLS-2$
         ifElement.addElement(new TextElement("select * from ( select * from ( select ROWNUM as RN , A.* from (")); //$NON-NLS-1$
         answer.addElement(ifElement);
 
@@ -82,8 +82,8 @@ public class SelectByExampleWithBLOBsElementGenerator extends
 
         //Oracle添加分页功能 -> end
         ifElement = new XmlElement("if"); //$NON-NLS-1$
-        ifElement.addAttribute(new Attribute("test", "start != 0 or limit != 0")); //$NON-NLS-1$ //$NON-NLS-2$
-        ifElement.addElement(new TextElement(") A ) B where B.RN &lt;= #{limit} ) C where C.RN &gt; #{start}")); //$NON-NLS-1$
+        ifElement.addAttribute(new Attribute("test", "startRow != 0 or endRow != 0")); //$NON-NLS-1$ //$NON-NLS-2$
+        ifElement.addElement(new TextElement(") A ) B where B.RN &lt;= #{endRow} ) C where C.RN &gt; #{startRow}")); //$NON-NLS-1$
         answer.addElement(ifElement);
 
         if (context.getPlugins().sqlMapSelectByExampleWithBLOBsElementGenerated(answer, introspectedTable)) {

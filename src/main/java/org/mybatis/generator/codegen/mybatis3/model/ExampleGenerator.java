@@ -76,11 +76,11 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         method.setConstructor(true);
         method.setName(type.getShortName());
         method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getIntInstance(), "start"));
+                .getIntInstance(), "startRow"));
         method.addParameter(new Parameter(FullyQualifiedJavaType
-                .getIntInstance(), "limit"));
-        method.addBodyLine("this.start = start;\n" +
-                "        this.limit = limit;\n" +
+                .getIntInstance(), "endRow"));
+        method.addBodyLine("this.startRow = startRow;\n" +
+                "        this.endRow = endRow;\n" +
                 "        oredCriteria = new ArrayList<Criteria>();"); //$NON-NLS-1$
 
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
@@ -139,16 +139,16 @@ public class ExampleGenerator extends AbstractJavaGenerator {
 
         //start limit for page
         field = new Field();
-        field.setVisibility(JavaVisibility.PROTECTED);
+        field.setVisibility(JavaVisibility.PUBLIC);
         field.setType(FullyQualifiedJavaType.getIntInstance());
-        field.setName("start"); //$NON-NLS-1$
+        field.setName("startRow"); //$NON-NLS-1$
         commentGenerator.addFieldComment(field, introspectedTable);
         topLevelClass.addField(field);
 
         field = new Field();
-        field.setVisibility(JavaVisibility.PROTECTED);
+        field.setVisibility(JavaVisibility.PUBLIC);
         field.setType(FullyQualifiedJavaType.getIntInstance());
-        field.setName("limit"); //$NON-NLS-1$
+        field.setName("endRow"); //$NON-NLS-1$
         commentGenerator.addFieldComment(field, introspectedTable);
         topLevelClass.addField(field);
 
